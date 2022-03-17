@@ -1,0 +1,12 @@
+<div class="container main-border center">
+  <h1>Register New Account</h1><hr />
+  <form #user="ngForm" (ngSubmit)="createUser(user)">
+    <input type="text" name="email" placeholder="email" ngModel />
+    <br />
+    <input type="password" name="password" placeholder="password" ngModel /><br />
+    <button type="submit" class="btn btn-outline-info button-space">Register</button>
+  </form>
+  <div *ngIf="message != undefined">
+    <p>{{message}}</p>
+  </div>
+</div>

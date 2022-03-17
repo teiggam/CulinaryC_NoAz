@@ -1,0 +1,48 @@
+<header>
+  <nav class="navbar navbar-expand-sm  navbar-collapse-md navbar-toggleable-sm navbar-toggler-md navbar-toggleable-lg navbar-dark bg-transparent mb-3">
+    <div class="container">
+    <a class="navbar-brand flex-grow" [routerLink]="['/']"><h2>Culinary Conquest</h2></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
+        [attr.aria-expanded]="isExpanded"
+        (click)="toggle()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-light" [ngClass]="{ show: isExpanded }" [routerLink]='["/app-pantry"]'>Pantry</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="#" [routerLink]='["/all-recipes"]'>Recipes</a>
+        </li>
+        <li id="navlink1" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-profile']">Profile</a>
+        </li>
+        <li id="navlink2" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-friends']">Friends</a>
+        </li>
+        <li id="navlink3" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-group']">Groups</a>
+        </li>
+        <li id="navlink5" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/add-recipe']">Add Recipe</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-leaderboard']">Leaderboard</a>
+        </li>
+        <li id="begone1" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-login']">Login</a>
+        </li>
+        <li id="begone2" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-register']">Register</a>
+        </li>
+
+        <li id="navlink4" class="nav-item">
+          <a class="nav-link text-light" [routerLink]="['/app-login']" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </nav>
+</header>
+

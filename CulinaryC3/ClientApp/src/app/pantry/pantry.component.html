@@ -1,0 +1,90 @@
+<div class="container main-border">
+  <div class="row">
+    <div class="col center">
+      <div *ngIf="user !== undefined; else elseBlock">
+        <h2 id="new">Welcome to the Chef Pantry, {{user.name}}!</h2><hr/>
+        <form id="new2" #changename="ngForm" (ngSubmit)="changeName(changename)">
+          <input type="text" name="value" placeholder="{{user.name}}" ngModel /><br />
+          <button class="btn btn-outline-info button-space" type="submit" value="Submit">Change Name</button>
+        </form>
+      </div>
+    </div>
+    <ng-template #elseBlock>
+      <h2>Welome to the Chef Pantry!</h2><hr/>
+      <form #changename="ngForm" (ngSubmit)="changeName(changename)">
+        <input type="text" name="value" placeholder="Enter your name!" ngModel />
+        <input type="submit" value="Change Name" />
+      </form>
+    </ng-template>
+  </div>
+</div>
+<div class="container main-border">
+  <div class="col center">
+    <h4>Browse titles and avatars that are unlocked as you earn points!!</h4><hr />
+    <div *ngIf="user !== undefined">
+      <h3>Current Title</h3>
+      <h2 style="color: #53B8BB">{{user.title}}</h2><hr />
+      <h3>Current Avatar</h3>
+      <img style="width: 200px; height: 200px" src="{{user.picture}}" />
+      <div *ngIf="user === undefined">
+        <p>Login to collect your rewards and change your name</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container main-border">
+  <div class="row">
+    <div class="col center">
+      <h2>Titles to Earn</h2><hr />
+      <div *ngFor="let t of titles">
+        <h3>{{t.title}}</h3>
+        <h5>{{t.value}} points needed</h5>
+        <button class="btn btn-outline-info button-space" *ngIf="user != undefined && user.score >= t.value" (click)="changeTitle(t.title)">Change Title</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container main-border">
+  <div class="center">
+    <h1>Avatars</h1><hr />
+    <img style="width: 200px; height: 200px" src="{{avatar.image}}" /><br />
+    <button class="btn btn-outline-info button-space" (click)="changeAvatar(avatar.image)">Select Avatar</button>
+    <hr /><br />
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 center">
+      <h3>{{avatars1[0].value}} points needed</h3>
+      <div *ngFor="let a of avatars1">
+        <img style="width: 200px; height: 200px" src="{{a.image}}" /><br />
+        <button class="btn btn-outline-info button-space" *ngIf="user != undefined && user.score >= a.value" (click)="changeAvatar(a.image)">Select Avatar</button>
+      </div>
+      <hr />
+    </div>
+    <div class="col-lg-6 col-md-6 center">
+      <h3>{{avatars2[0].value}} points needed</h3>
+      <div *ngFor="let a of avatars2">
+        <img style="width: 200px; height: 200px" src="{{a.image}}" /><br />
+        <button class="btn btn-outline-info button-space" *ngIf="user != undefined && user.score >= a.value" (click)="changeAvatar(a.image)">Select Avatar</button>
+      </div>
+      <hr />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 center">
+      <h3>{{avatars3[0].value}} points needed</h3>
+      <div *ngFor="let a of avatars3">
+        <img style="width: 200px; height: 200px" src="{{a.image}}" /><br />
+        <button class="btn btn-outline-info button-space" *ngIf="user != undefined && user.score >= a.value" (click)="changeAvatar(a.image)">Select Avatar</button>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 center">
+      <h3>{{avatars4[0].value}} points needed</h3>
+      <div *ngFor="let a of avatars4">
+        <img style="width: 200px; height: 200px" src="{{a.image}}" /><br />
+        <button class="btn btn-outline-info button-space" *ngIf="user != undefined && user.score >= a.value" (click)="changeAvatar(a.image)">Select Avatar</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+

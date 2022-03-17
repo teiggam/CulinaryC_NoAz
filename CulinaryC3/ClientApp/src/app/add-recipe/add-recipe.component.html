@@ -1,0 +1,226 @@
+<!--bootstrap container-->
+<!--id: recipe will change the inner Html after submit recipe-->
+<div id="recipe" class="container main-border center">
+
+  <h1>Create New Recipe</h1><hr />
+
+  <div class="row">
+    <div class="col-sm-auto"></div>
+    <div class="col-8 mx-auto secondary-border center">
+      <div id="confirm">
+        <form #addTitle="ngForm" (ngSubmit)="AddRecipe(addTitle.form.value.title); ConfirmTitle(addTitle.form.value.title)">
+          <h2>Title </h2><hr />
+          <input type="text" name="title" placeholder="Title of Recipe" ngModel />
+          <br />
+          <input type="submit" class="btn btn-outline-info button-space" value="Create New Recipe" />
+        </form>
+      </div>
+    </div>
+    <div class="col-sm-auto"></div>
+  </div>
+  <div class="row ">
+    <div class="col-auto"></div>
+    <div class="col-8 mx-auto">
+      <div *ngIf="iList.length !== 0; else elseBlock">
+        <div class="secondary-border center ingredient-list">
+          <h3>Ingredient List</h3>
+          <h5 *ngFor="let in of iList; index as i">
+            {{in.amount}} {{in.unit}} - {{in.item}} <button class="btn btn-outline-light button-space" (click)="RemoveIngredient(i)">x</button>
+          </h5>
+        </div>
+      </div>
+      <ng-template #elseBlock>
+        <div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="col-auto"></div>
+  </div>
+
+
+  <!-- Search Indregients -- return data from API -->
+  <div class="row">
+
+    <div class="col-auto mx-auto secondary-border">
+      <h3>Search Ingredients</h3>
+      <hr />
+      <form id="firstIng" #searchFoodForm="ngForm" (ngSubmit)="SearchIngredient(searchFoodForm.form.value.food)">
+        <input type="search" name="food" placeholder="Search for ingredient" ngModel />
+        <input type="submit" class="btn btn-outline-info button-space" value="Find Ingredient" />
+      </form>
+      <hr />
+      <div *ngIf="message != null">
+        {{message}}
+        <hr />
+      </div>
+      <div *ngIf="ing != null ">
+        <h5>Did you mean <b>{{ing.name}}</b>?</h5>
+        <h6>If so, please enter the quantity and unit below.</h6>
+        <h6>If not, please search again or add a custom ingredient.</h6>
+        <form #addIngredientForm="ngForm" (ngSubmit)="AddToIngArray(addIngredientForm)">
+          <input type="hidden" name="food" value="{{ing.name}}" placeholder="{{ing.name}}" ngModel />
+          <input type="hidden" name="recipeID" value="{{ing.id}}" ngModel />
+          <input class="button-space" style="width: 25%" type="number" min="0" placeholder="1" name="amount" ngModel />
+          <select name="unit" ngModel>
+            <option disabled selected>unit</option>
+            <option value="g">g</option>
+            <option value="oz">oz</option>
+            <option value="tsp">tsp</option>
+            <option value="tbsp">tbsp</option>
+            <option value="cup">cup</option>
+            <option value="lb">lb</option>
+          </select>
+          <input type="submit" class="btn btn-outline-info button-space" value="Add Ingredient" />
+        </form>
+      </div>
+    </div>
+
+    <!--let user add ingredient-->
+    <div class="col-auto mx-auto center secondary-border">
+      <div>
+        <h3>Add Custom Ingredients</h3>
+        <hr />
+        <p>*Nutritional information for submitted ingredients may not be accurate*</p>
+
+        <form class="mx-auto center" #addUserIngredientForm="ngForm" (ngSubmit)="AddUserIngredient(addUserIngredientForm);">
+          <!--name of the food-->
+          <label class="col-form-label">Ingredient</label>
+          <div class="form-group">
+            <input class="input-size" type="text" name="userIng" ngModel />
+          </div>
+          <!--amount of the food-->
+          <label class="col-form-label">Amount:</label>
+          <div class="form-group">
+            <input class="input-size-ingredient" type="number" min="0" name="amount" placeholder="0" ngModel />
+            <!--select the measurement of the food-->
+            <select name="unit" ngModel>
+              <option value="g">g</option>
+              <option value="oz">oz</option>
+              <option value="tsp">tsp</option>
+              <option value="tbsp">tbsp</option>
+              <option value="cup">cup</option>
+              <option value="lb">lb</option>
+            </select>
+          </div>
+
+          <!--Calories / Carbs / Fats / Protiens-->
+          <div class="form-group">
+            <input class="input-size" type="number" min="0" name="calories" value="0" placeholder="Calories" ngModel />
+          </div>
+
+          <div class="form-group">
+            <input class="input-size" type="number" min="0" name="carbs" value="0" placeholder="Carbs" ngModel />
+          </div>
+
+          <div class="form-group">
+            <input class="input-size" type="number" min="0" name="fats" value="0" placeholder="Fats" ngModel />
+          </div>
+
+          <div class="form-group">
+            <input class="input-size" type="number" min="0" name="protein" value="0" placeholder="Protein" ngModel />
+          </div>
+
+          <input type="submit" class="btn btn-outline-info button-space" />
+        </form>
+        <br />
+      </div>
+    </div>
+  </div>
+
+
+  <!--Add Directions-->
+  <!--Add Image-->
+  <!-- Update form and pass completed recipe to backend -->
+  <div class="row">
+    <div class="col-auto"></div>
+    <div class="col-8 mx-auto center secondary-border">
+      <h2>Directions</h2>
+
+      <form id="dir" class="form-horizontal" #desForm="ngForm" (ngSubmit)="AddString(desForm); ConfirmDir()">
+        <input class="input-size-directions" type="text" name="step1" placeholder="Step 1" ngModel />
+        <br />
+        <input class="input-size-directions" type="text" name="step2" placeholder="Step 2" ngModel />
+        <br />
+        <input class="input-size-directions" type="text" name="step3" placeholder="Step 3" ngModel />
+        <br />
+
+        <div *ngIf="ste4 == false">
+          <button class="btn btn-outline-info button-space" (click)="step4()">Add Step</button>
+        </div>
+        <div *ngIf="ste4 != false">
+          <input class="input-size-directions" type="text" name="step4" placeholder="Step 4" ngModel />
+        </div>
+        <div *ngIf="ste4 != false && ste5 == false">
+          <button class="btn btn-outline-info button-space" (click)="step5()">Add Step</button>
+        </div>
+
+        <div *ngIf="ste5 != false">
+          <input class="input-size-directions" type="text" name="step5" placeholder="Step 5" ngModel />
+        </div>
+        <div *ngIf="ste5 != false && ste6 == false">
+          <button class="btn btn-outline-info button-space" (click)="step6()">Add Step</button>
+        </div>
+
+        <div *ngIf="ste6 != false">
+          <input class="input-size-directions" type="text" name="step6" placeholder="Step 6" ngModel />
+        </div>
+        <div *ngIf="ste6 != false && ste7 == false">
+          <button class="btn btn-outline-info button-space" (click)="step7()">Add Step</button>
+        </div>
+
+        <div *ngIf="ste7 != false">
+          <input class="input-size-directions" type="text" name="step7" placeholder="Step 7" ngModel />
+        </div>
+        <div *ngIf="ste7 != false && ste8== false">
+          <button class="btn btn-outline-info button-space" (click)="step8()">Add Step</button>
+        </div>
+
+        <div *ngIf="ste8 != false">
+          <input class="input-size-directions" type="text" name="step8" placeholder="Step 8" ngModel />
+        </div>
+        <div *ngIf="ste8 != false && ste9 == false">
+          <button class="btn btn-outline-info button-space" (click)="step9()">Add Step</button>
+        </div>
+
+        <div *ngIf="ste9 != false">
+          <input class="input-size-directions" type="text" name="step9" placeholder="Step 9" ngModel />
+        </div>
+        <div *ngIf="ste9 != false && ste10 == false">
+          <button class="btn btn-outline-info button-space" (click)="step10()">Add Step</button>
+        </div>
+
+        <div *ngIf="ste10 != false">
+          <input class="input-size-directions" type="text" name="step10" placeholder="Step 10" ngModel />
+        </div>
+        <input class="btn btn-outline-info btn-sm button-space" type="submit" value="Submit Directions" />
+      </form>
+      <!--end directions-->
+      <hr />
+      <!--Add a Photo to recipe-->
+      <form #directionsForm="ngForm" (ngSubmit)="UpdateRecipe(directionsForm); AddIngredientsToDB(); ConfirmRecipe()" id="dirform" enctype="multipart/form-data">
+        <h3>Servings</h3>
+        Servings: <input type="number" placeholder="1" name="servings" min="1" ngModel style="width:50px;" /><br />
+        <hr />
+        <!--add photo-->
+        <!-- <h3>Add A Photo</h3>
+        <input class="btn btn-outline-info btn-sm button-space" type="file" (change)="imageSelected($event.target.files[0])" />
+        <br> -->
+                  <!-- child selector- onUploadFinished @output event from child -->
+                  <app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
+                  <!-- uploadFinished() is method from parent -->
+        <input class="btn btn-outline-success button-space big-button" type="submit" value="Add Recipe" />
+      </form>
+    </div>
+    <div class="col-auto"></div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+<div class="container main-border center">
+  <h1>Notifications</h1><hr />
+  <div *ngIf="message !== null">
+    <p>{{message}}</p>
+  </div>
+  <div *ngIf="message3 !== null">
+    <p>{{message3}}</p>
+  </div>
+  <div *ngIf="inviteList !== null">
+    <!--print out the list of groups-->
+    <div class="row">
+      <div class="col-lg-6 col-md-6 center secondary-border" *ngFor="let i of inviteList">
+        <h5>{{i.inviterEmail}} Invited You To {{i.nameofGroup}}</h5>
+        <button class="btn btn-outline-info button-space" (click)="acceptInvite(i.nameofGroup, i.id)">Accept</button>
+        <button class="btn btn-outline-info button-space" (click)="declineInvite(i.nameofGroup, i.id)">Decline</button>
+      </div>
+    </div>
+  </div>
+</div>

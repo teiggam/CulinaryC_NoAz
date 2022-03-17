@@ -1,0 +1,100 @@
+<div class="container main-border center">
+  <div>
+    <h1 class="center">Account Settings</h1>
+    <hr />
+  </div>
+
+  <!--Change Password-->
+  <div class="row secondary-border center">
+    <div class="col">
+      <h3 class="center">Change Password</h3>
+
+      <div *ngIf="passMessage !== null">
+        <h4>{{passMessage}}</h4>
+      </div>
+
+      <form #password="ngForm" (ngSubmit)="changePassword(password)">
+        <div class="form-group">
+          <div class="col-12">
+            <label>Current Password</label>
+            <input class="input-space" type="password" name="p1" placeholder="Current Password" ngModel />
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Re-enter Password</label>
+          <input class="input-space" type="text" name="p2" placeholder="Current Password" ngModel />
+        </div>
+        <div class="form-group">
+          <label>New password:</label>
+          <input class="input-space" type="password" name="newPas" placeholder="New Password" ngModel />
+        </div>
+        <div>
+          <input class="btn btn-outline-info button-space" type="submit" value="Update Password" />
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--Creates space between divs -- please do not delete-->
+  <div class="row">
+    <p></p>
+  </div>
+
+  <!--Change Email-->
+  <div class="row secondary-border center">
+    <div class="col">
+      <h3>Change Email</h3>
+
+      <div *ngIf="passMessage !== null">
+        <p>{{emailMessage}}</p>
+      </div>
+
+      <form #mail="ngForm" (ngSubmit)="changeEmail(mail)">
+        <input type="text" name="email" placeholder="New Email" ngModel />
+        <br />
+        <input class="btn btn-outline-info button-space" type="submit" value="Update Email" />
+      </form>
+    </div>
+  </div>
+
+  <!--Creates space between divs -- please do not delete-->
+  <div class="row">
+    <p></p>
+  </div>
+
+  <!--Delete account!-->
+  <div class="row secondary-border center">
+    <div class="col">
+      <h2>Delete Account</h2>
+      <button class="btn btn-outline-danger button-space" id="permanent" (click)="delete()">Permanently Delete</button>
+    </div>
+  </div>
+
+  <!--Creates space between divs -- please do not delete-->
+  <div class="row">
+    <p></p>
+  </div>
+
+  <div class="row secondary-border center">
+    <div class="col">
+      <h3>Guess The Lucky Number and Win Points</h3>
+      <form #guess="ngForm" (ngSubmit)="Guess(guess)">
+        <input type="number" name="guesses" placeholder="Good Luck" ngModel />
+        <input class="btn btn-outline-info button-space" type="submit" value="Guess" />
+      </form>
+
+      <div *ngIf="WinnerMessage !== undefined">
+        <p>{{WinnerMessage}} <br /> The number was {{num}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+ 
+
+
+  
+
+

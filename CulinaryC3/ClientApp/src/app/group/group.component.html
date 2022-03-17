@@ -1,0 +1,50 @@
+
+<div class="container main-border">
+  <div class="center">
+    <h1>Your Groups</h1><hr />
+    <button id=button type="button" class="btn btn-outline-info button-space  button-border" (click)="friendsList(); hide()">Invite Friends To Groups</button>
+    <button type="button" class="btn btn-outline-info button-space   button-border" routerLink='/app-new-group'>Add New Group</button>
+  </div>
+
+  <div class="center" *ngIf="message !== null">
+    <h3>{{message}}</h3>
+  </div>
+  <br />
+  <div class="row">
+    <div *ngIf="groupList !== null">
+      <div class="row">
+        <div *ngFor="let g of groupList">
+          <div style="max-width: 10rem; min-width: 20rem; padding: 5px; margin: 5px;" class="col-lg-6 col-md-6 center secondary-border">
+            <div>
+              <div>
+                <h5>{{g.groupName}}</h5>
+                <!--add new recipe-->
+                <button type="button" class="btn btn-outline-info button-space" [routerLink]="['/detail-group', g.groupId]"> Go to Group</button>
+                <!--View Favorites-->
+                <div *ngIf="g.admin != true">
+                  <button type="button" class="btn btn-outline-danger btn-sm button-space" (click)="removeSelf(g.groupName)">Remove Self</button>
+                </div>
+                <div *ngIf="g.admin == true">
+                  <button type="button" class="btn btn-outline-danger btn-sm button-space" (click)="groupUsers(g.groupName)">Remove User(s)</button>
+                  <button type="button" class="btn btn-outline-danger btn-sm button-space" (click)="deleteGroup(g.groupName)">Delete Group</button>
+                  <div *ngIf="gList !== null">
+                    <div *ngFor="let e of gList">
+                      <button (click)="removeUser(e.id, g.groupName)">Remove {{e.name}}</button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="friendsList !== null">
+                  <div *ngFor="let f of fList">
+                    <br />
+                    <button type="button" class="btn btn-outline-info button-space" (click)="inviteFriend(f.id, g.groupName)">Invite {{f.name}}</button>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

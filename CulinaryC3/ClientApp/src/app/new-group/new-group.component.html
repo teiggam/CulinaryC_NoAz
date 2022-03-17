@@ -1,0 +1,22 @@
+<div class="container main-border">
+  <div class="center">
+    <h1>Create New Group</h1><hr />
+    <div *ngIf="message2 == false">
+      <form #newform="ngForm" (ngSubmit)="CreateGroup(newform.form.value.name)">
+        <input type="text" name="name" placeholder="New Group Name" ngModel />
+        <br /><button class="btn btn-outline-info button-space" type="submit" value="Submit">Add Group</button>
+      </form>
+    </div>
+    <div *ngIf="message2 == true">
+      <h2>Already in 5 groups (max 5)</h2>
+    </div>
+    <br />
+    <div *ngIf="message !== null">
+      <h2>{{message}}</h2>
+    </div>
+    <div class="newDiv">
+      <br />
+      <button type="button" class="btn btn-outline-info button-space" routerLink='/app-group'>Return to Groups Page</button>
+</div>
+  </div>
+</div>

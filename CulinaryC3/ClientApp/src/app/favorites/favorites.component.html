@@ -1,0 +1,45 @@
+<h1>Favorites</h1>
+<div *ngIf="message !== null">
+  <p>{{message}}</p>
+</div>
+<br />
+<!--<div *ngIf="fList !== null">-->
+<!--print out the list of groups-->
+<!--<div style="border: 1px solid black" *ngFor="let f of fList">
+    <button class="b3" (click)="removeFavorite(f.id)" style="background-color: transparent;">X</button>
+    <h5>{{f.id}}: {{f.recipeName}}</h5>
+  </div>
+</div>-->
+
+<div *ngIf="fList !== null" class="row">
+  <div *ngFor="let f of fList">
+    <div style="max-width: 10rem; min-width: 20rem" class="p-3 flex-wrap">
+      <div class="card  main-border">
+        <div class="card-body">
+          <div class="card secondary-border" *ngIf="f.picture === null; else elseBlock">
+            <img class="card-img-top" style="border-radius: 20px;" src="Default_Hat.png" />
+            <h3 class="card-title center">  {{f.recipeName}}  </h3>
+            <div class="card-text  center">
+              <b> Score: </b>{{f.score}} <br />
+              <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', f.id]">View Details</a>
+              <br />
+              <a class="btn btn-outline-info button-space" (click)="removeFavorite(f.id)">Remove Favorite</a>
+            </div>
+          </div>
+
+          <ng-template #elseBlock>
+            <img class="card-img-top secondary-border" style="width: 100%" src="{{f.picture}}" />
+            <h3 class="card-title center">  {{f.recipeName}}  </h3>
+            <div class="card-text  center">
+              <b> Score: </b>{{f.score}} <br />
+              <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', f.id]"> View Details </a>
+              <br />
+              <a class="btn btn-outline-info button-space" (click)="removeFavorite(f.id)">Remove Favorite</a>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

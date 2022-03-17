@@ -1,0 +1,46 @@
+
+<div class="container main-border">
+  <div class="center">
+    <h1>Add Friend</h1><hr />
+    <p><b>{{message}}</b></p><br />
+    <div class="row">
+      <div class="col secondary-border">
+        <button class="btn btn-outline-info button-space" id="button2" (click)="revealName()">Search by Name</button>
+        <div *ngIf="reveal2 != null">
+          <form #Searchname="ngForm" (ngSubmit)="searchbyName(Searchname.form.value.search)">
+            <input type="text" name="search" placeholder="Friend Name" ngModel /><br />
+            <button class="btn btn-outline-info button-space" type="submit" value="Submit">Search</button>
+          </form>
+        </div>
+      </div>
+      <div class="col secondary-border">
+        <button class="btn btn-outline-info button-space" id="button" (click)="revealEmail()">Search by Email</button>
+        <div *ngIf="reveal1 != null">
+          <form #Searchemail="ngForm" (ngSubmit)="searchbyEmail(Searchemail.form.value.search)">
+            <input type="text" name="search" placeholder="Friend Email" ngModel /><br>
+            <button class="btn btn-outline-info button-space" type="submit" value="Submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </div><br />
+    <div class="row">
+      <div class="col secondary-border">
+        <h3>Search Results</h3>
+        <div *ngIf="uList != null">
+          <div *ngFor="let u of uList">
+            <h4>{{u.name}}</h4>
+            <button class="btn btn-outline-info button-space" (click)="AddFriend(u.id)">Add Friend</button>
+          </div>
+        </div>
+        <div *ngIf="email != null">
+          <h4>{{email.loginId}}</h4>
+          <button class="btn btn-outline-info button-space" (click)="AddFriend(email.id)">Add Friend</button>
+        </div>
+      </div>
+    </div><br />
+
+
+  </div>
+</div>
+
+

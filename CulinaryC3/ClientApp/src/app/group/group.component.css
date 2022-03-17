@@ -1,0 +1,43 @@
+.center {
+  text-align: center;
+}
+
+.main-border {
+  border: solid 3px #53B8BB;
+  border-radius: 20px;
+  background-color: #055052;
+  padding: 4%;
+  margin: 1%;
+}
+
+.secondary-border {
+  border: solid 3px #53B8BB;
+  border-radius: 20px;
+  background-color: #003638;
+}
+
+.button-space {
+  padding: 10px;
+  margin: 10px;
+}
+
+a:hover {
+  color: white;
+}
+
+.headding-padding {
+  padding-top: 10px;
+}
+
+.button-border {
+  border: solid 3px #53B8BB;
+  border-radius: 10px;
+  background-color: #003638;
+  color: #53B8BB;
+}
+
+.button-border:hover {
+   background-color: white;
+   opacity: 0.5;
+   color: #003638
+}

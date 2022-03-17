@@ -1,0 +1,28 @@
+<div class="container main-border center">
+  <h1>Welcome to Culinary Conquest</h1><hr />
+  <img style="width:65%; height:inherit" src="CCLogo.png" />
+  <hr />
+  <p>Culinary Conquest is an interactive family cookbook competition web app that allows you to add recipes. Search for ingredients, or enter your own nutritional information, Culinary Conquest will help you build your family recipes and automatically calculate the calories, fat, protein, and carbs per serving. Join groups, invite your friends and family, and share recipes!  Culinary Conquest is your sole destination for keeping a digital copy of those recipes usually passed down on handwritten cards. Earn points for adding recipes, and making recipes to unlock chef statuses and fun avatars to show off in your groups.  With culinary conquest, you can watch your favorite recipes climb to the top of the leaderboard.</p>
+  <div>
+    <button type="button" class="btn btn-outline-info button-space" routerLink='/app-register'>Register Now!</button>
+    <button type="button" class="btn btn-outline-info button-space" routerLink='/app-login'>Login</button>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col">
+      <div style="max-width: 10rem; min-width: 20rem" class="p-3 flex-wrap">
+        <div class="card  secondary-border">
+          <div *ngIf="recipe != null">
+            <h2>Recipe of the Day</h2>
+            <h4>{{realRecipe.recipeName}}</h4>
+            <img class="card-img-top secondary-border" src="{{realRecipe.picture}}" />
+            <p>Score: {{realRecipe.score}}</p>
+            <p>Servings: {{realRecipe.servings}}</p>
+            <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', realRecipe.id]"> More Details </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="container main-border center">
+  <h1>Recipe Search </h1><hr />
+  <div class="row">
+    <div class="col center">
+      <div class="center">
+        <!-- Search by Name: -->
+        <h4>Search Recipe By Name</h4>
+        <input class="inputFeild" type="text" name="name" placeholder="Bison Chili" [(ngModel)]="name" />
+        <input class="btn btn-outline-info button-space button-border2" type="submit" (click)="searchRecipeByName(name)" />
+        <br />
+        <hr />
+        <div *ngIf="r !== undefined">
+          <div *ngFor="let rs of r">
+            <h3>{{rs.recipeName}}</h3>
+            <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', rs.id]"> More Details </a>
+          </div>
+        </div>
+
+        <div *ngIf="message2 != undefined">
+          <p>{{message2}}</p>
+        </div>
+
+        <br /><hr />
+        <!--Search by ingredients-->
+        <h4>Search Recipe By Ingredient </h4>
+        <input class="inputFeild" type="text" name="ing" placeholder="Potato" [(ngModel)]="ing" />
+        <input class="btn btn-outline-info button-space button-border2" type="submit" (click)="searchRecipeByIng(ing)" />
+        <br />
+        <hr />
+        <div *ngFor="let recipe of foundRecipe">
+          <h3>{{recipe.recipeName}}</h3>
+          <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', recipe.id]"> More Details </a>
+        </div>
+
+        <div *ngIf="message3 != undefined">
+          <p>{{message3}}</p>
+        </div>
+
+        <br />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container main-border center">
+  <h1>All Recipes </h1><hr />
+  <div class="row">
+    <div *ngFor="let r of recipes">
+      <!-- container for recipe card -->
+      <div style="max-width: 10rem; min-width: 20rem" class="p-3 flex-wrap">
+        <div class="card  secondary-border">
+          <div>
+            <button (click)="favorite(r.id)"
+                    style="float:right; border:none;
+                    background-color: transparent;" id="{{r.id}}"
+                    class="rc">
+              <img id="i" class="favButton" src='outlineStar.png' />
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="card secondary-border" *ngIf="r.picture === null">
+              <img class="card-img-top" style="border-radius: 20px;" src="Default_Hat.png" />
+            </div>
+            <div *ngIf="r.picture !=null">
+              <img class="card-img-top secondary-border" src="{{r.picture}}" />
+            </div>
+            <h3 class="card-title center">  {{r.recipeName}}  </h3>
+            <div class="card-text  center">
+              <b> Score: </b>{{r.score}} <br />
+              <div *ngIf="r.servings !== null"> <b> Servings: </b> {{r.servings}}</div>
+              <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', r.id]"> More Details </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

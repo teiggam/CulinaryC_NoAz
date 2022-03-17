@@ -1,0 +1,12 @@
+<div class="container main-border center">
+  <h1>Login</h1><hr />
+  <form #user="ngForm" (ngSubmit)="signIn(user)">
+    <input type="text" name="email" placeholder="email" ngModel />
+    <br />
+    <input type="password" name="password" placeholder="password" ngModel /><br />
+    <button type="submit"  class="btn btn-outline-info button-space" >Login</button>
+  </form>
+  <div *ngIf="message != null">
+    <p>{{message}}</p>
+  </div>
+</div>

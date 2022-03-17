@@ -1,0 +1,60 @@
+
+<div class="container main-border">
+  <div *ngIf="group.groupName != undefined">
+    <div class="center">
+      <h1> {{group.groupName}}</h1>
+    </div>
+    <hr />
+    <div> {{group.score}}</div>
+    <!-- need to pull in all the users in the group still-->
+  </div>
+
+  <!-- I am going to go though each user in this group and pull their recipes in and then print them-->
+  <!--<h2> Recipes in this group!</h2>
+  <div *ngFor="let r of allRecipes">
+    <div *ngIf="r != undefined">
+      <h3>{{r.recipeName}}</h3>
+
+      <a [routerLink]="['/detail-recipe', r.id]"> More Details </a>
+    </div>
+  </div>-->
+  <h3>Members</h3>
+  <div *ngFor="let g of Users">
+    <h5>{{g.name}}</h5>
+  </div><hr />
+  <div class="center">
+    <h1> Group Recipes</h1>
+  </div>
+  <div class="row">
+    <div *ngFor="let r of allRecipes"><hr />
+      <!-- container for recipe card -->
+      <div style="max-width: 10rem; min-width: 20rem" class="p-3 flex-wrap">
+        <div class="card  secondary-border">
+          <div>
+            <button (click)="favorite(r.id)"
+                    style="float:right; border:none;
+                    background-color: transparent;" id="{{r.id}}"
+                    class="rc">
+              <img id="i" class="favButton" src='outlineStar.png' />
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="card secondary-border" *ngIf="r.picture === null">
+              <img class="card-img-top" style="border-radius: 20px;" src="Default_Hat.png" />
+            </div>
+            <div *ngIf="r.picture !=null">
+              <img class="card-img-top secondary-border" src="{{r.picture}}" />
+            </div>
+            <h3 class="card-title center">  {{r.recipeName}}  </h3>
+            <div class="card-text  center">
+              <b> Score: </b>{{r.score}} <br />
+              <div *ngIf="r.servings !== null"> <b> Servings: </b> {{r.servings}}</div>
+              <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', r.id]"> More Details </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

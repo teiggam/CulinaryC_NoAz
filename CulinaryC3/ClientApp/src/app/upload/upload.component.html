@@ -1,0 +1,19 @@
+<div class="row" style="margin-bottom: 15px;">
+  <div class="col-md-3">
+    <img [src]="imageUrl" style="width:250px; height:250px">
+    <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none">
+    <button type="button" class="btn btn-success" (click)="file.click()">Upload Photo</button>
+  </div>
+  <div class="col-md-4">
+    <span class="upload" *ngIf="progress > 0">
+      {{progress}}%
+    </span>
+    <span class="upload" *ngIf="message">
+      {{message}}
+    </span>
+  </div>
+</div>
+<!--<label for="ImageFile">Select an Image:</label>
+<br>
+<input for="ImageFile" type="file" accept="image/*" (change)="handleFileInput($event.target.files)">
+<br />-->

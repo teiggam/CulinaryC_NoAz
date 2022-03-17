@@ -1,0 +1,24 @@
+<div class="container main-border">
+
+  <div class="center">
+  <h1>Friends </h1><hr />
+    <button id=button type="button" class="btn btn-outline-info button-space button-border " routerLink='/app-add-friend'>Add New Friends</button>
+    <div *ngIf="fList !== null">
+      <div *ngIf="message !== null">
+        <p>{{message}}</p>
+      </div>
+    </div>
+
+    <div *ngIf="fList !== []">
+      <div class="row">
+        <div *ngFor="let u of fList">
+          <div style="max-width: 10rem; min-width: 20rem; padding: 5px; margin: 5px;" class="col secondary-border center">
+            <h5>{{u.name}}</h5>
+            <img style="height: 200px; width: 200px;" src="{{u.picture}}" />
+            <button type="button" class="btn btn-outline-info button-space button-border2" (click)="removeFriend(u.id)">Remove Friend</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

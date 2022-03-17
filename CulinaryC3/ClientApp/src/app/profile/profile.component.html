@@ -1,0 +1,95 @@
+<div class="container main-border">
+  <div class="center">
+    <h1>{{user.name}}'s Profile</h1><hr />
+  </div>
+
+  <!--will hold the profile information-->
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 center ">
+      <div *ngIf="leader !== null">
+        <img style="height: 75px; width: 75px" src="{{leader}}" />
+      </div>
+      <h2>{{user.title}}</h2>
+
+      <a routerLink="/app-invites">You have {{value}} notifications!</a>
+      <br />
+      <img style="height: 200px; width: 200px;" src="{{user.picture}}" />
+      <br />
+      <h4>Score: {{user.score}}</h4>
+
+      <div *ngIf="numFollowers !== null">
+        <h3 style="font-size:small">{{numFollowers}} followers</h3>
+      </div>
+      <button type="button" class="btn btn-outline-info button-space" routerLink='/app-pantry'>Profile Settings</button>
+      <button type="button" class="btn btn-outline-info button-space" routerLink='/app-account-settings'>Account Settings</button>
+    </div>
+
+    <!--friend information-->
+    <div class="col-lg-6 col-md-6 center secondary-border">
+      <h2 class="headding-padding"><a routerLink='/app-friends'>Friends</a></h2>
+      <div *ngFor="let f of fList | slice:0:5">
+        <div *ngIf="fList !== undefinded">
+          <p>{{f.name}} : {{f.score}}</p>
+        </div>
+      </div>
+
+      <!--group information-->
+      <div>
+        <h2 class="headding-padding"><a routerLink='/app-group'>Manage Groups</a></h2>
+        <div *ngFor="let g of gList; index as i">
+          <p *ngIf="g.admin === true">{{g.groupName}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="container main-border">
+  <!--Second Container hold recipes-->
+  <div class="center">
+    <h2>{{user.name}}'s Cookbook</h2><hr />
+  </div>
+  <div class="col center">
+    <!--Second Container hold recipes-->
+    <!--add new recipe-->
+    <button type="button" class="btn btn-outline-info button-space" routerLink='/add-recipe'>Add new recipe</button>
+    <!--View Favorites-->
+    <button type="button" class="btn btn-outline-info button-space" routerLink="/app-favorites">View Favorites</button>
+  </div>
+  <!--display list of recipes-->
+
+  <div class="row">
+    <div *ngFor="let r of rList | slice:0:5">
+
+      <div style="max-width: 10rem; min-width: 20rem" class="p-3 mx-auto flex-wrap">
+        <div class="card-body">
+          <!--if picture is null -- supply default-->
+          <div class="card secondary-border" *ngIf="r.picture === null; else elseBlock">
+            <img class="card-img-top secondary-border" style="border-radius: 20px;" src="Default_Hat.png" />
+            <h5 class="card-title center">{{r.recipeName}} </h5>
+            <div class="card-text  center">
+              <b>Score:</b> {{r.score}}<br />
+              <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', r.id]">View Recipe</a>
+              <br />
+              <button type="button" class="btn btn-outline-danger btn-sm button-space" id="{{r.id}}" (click)="warning(r.id)">Remove Recipe</button>
+            </div>
+          </div>
+          <!--will display recip with photo user supplies-->
+          <ng-template #elseBlock>
+            <div class="card secondary-border mx-auto">
+              <img class="card-img-top secondary-border" src="{{r.picture}}" />
+              <h5 class="card-title center">{{r.recipeName}}</h5>
+              <div class="card-text  center">
+                <b>Score:</b> {{r.score}}<br />
+                <a class="btn btn-outline-info button-space" [routerLink]="['/detail-recipe', r.id]">View Recipe</a>
+                <br />
+                <button type="button" class="btn btn-outline-danger btn-sm button-space" id="{{r.id}}" (click)="warning(r.id)">Remove Recipe</button>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

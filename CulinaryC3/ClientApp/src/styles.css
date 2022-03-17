@@ -1,0 +1,137 @@
+a {
+  color: #53B8BB;
+}
+
+  a:hover {
+    color: #4ba1a3;
+  }
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+
+.favButton {
+  float: left;
+  height: 20px;
+  width: auto;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  opacity: 100%;
+}
+
+i {
+  border: 3px solid rgba(0, 0, 0, 0.514);
+}
+
+html, header, body {
+  background-color: #003638;
+  color: #53B8BB;
+}
+
+h1, h2, h3 {
+  color: #F3F2C9;
+}
+
+.b3 {
+  margin: 0 auto;
+  background-color: #ff1493;
+  color: #eee;
+  text-align: center;
+  display: inline-block;
+  float: right;
+  justify-content: center;
+  width: min-content;
+  padding: 5px
+}
+
+hr {
+  border-top: 1px solid #53B8BB;
+}
+
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.center {
+  text-align: center;
+}
+
+.inputFeild {
+  Color: #003638;
+}
+
+input[type=text]:focus {
+  border: 3px solid #53B8BB;
+}
+
+.main-border {
+  border: solid 3px #53B8BB;
+  border-radius: 20px;
+  background-color: #055052;
+  padding: 4%;
+  margin: 1%;
+}
+
+.secondary-border {
+  border: solid 3px #53B8BB;
+  border-radius: 20px;
+  background-color: #003638;
+}
+
+.button-space {
+  padding: 10px;
+  margin: 10px;
+}
+
+a:hover {
+  color: white;
+}
+
+.card-size {
+  width: 18rem;
+}
+
+.headding-padding {
+  padding-top: 10px;
+}
+
+.button-border {
+  border: solid 3px #53B8BB;
+  border-radius: 10px;
+  background-color: #003638;
+  color: #53B8BB;
+}
+
+  .button-border:hover {
+    background-color: white;
+    opacity: 0.5;
+    color: #003638
+  }
+
+.button-border2 {
+  border: solid 1px #78f7fa;
+  border-radius: 10px;
+  background-color: #003638;
+  color: #78f7fa;
+}
+
+  .button-border2:hover {
+    background-color: white;
+    opacity: 0.5;
+    color: #003638
+  }
+
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
