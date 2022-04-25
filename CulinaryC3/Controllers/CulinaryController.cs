@@ -1,4 +1,4 @@
-﻿using CulinaryC3.Model;
+﻿using CulinaryC3.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,30 +14,30 @@ namespace CulinaryC.Controllers
         //Create a Database object
         CookBook2Context db = new CookBook2Context();
 
-        [HttpGet("recipeofday")]
-        public RecipeofDay RecipeOfDay()
-        {
-            int day = DateTime.Today.Day + 1;
-            List<Recipe> r = db.Recipes.ToList();
+        //[HttpGet("recipeofday")]
+        //public RecipeofDay RecipeOfDay()
+        //{
+        //    int day = DateTime.Today.Day + 1;
+        //    List<Recipes> r = db.Recipes.ToList();
 
-            Random ran = new Random();
-            int num = ran.Next(0, r.Count);
+        //    Random ran = new Random();
+        //    int num = ran.Next(0, r.Count);
 
 
-            RecipeofDay d = new RecipeofDay();
+        //    RecipeofDay d = new RecipeofDay();
 
-            d.recipeId = r[num].Id;
-            d.dayofMonth = day;
+        //    d.recipeId = r[num].Id;
+        //    d.dayofMonth = day;
 
-            return d;
-        }
+        //    return d;
+        //}
 
 
         //if they 'complete' someone else recipe
         [HttpPut("completed/u={id}")]
         public void Completed(int id)
         {
-            User u = db.Users.Find(id);
+            Users u = db.Users.Find(id);
             //this is an honor system we hope no one exploits it lol
 
             u.Score = u.Score + 5;
@@ -51,9 +51,9 @@ namespace CulinaryC.Controllers
 
         //-------------- LIST ALL Recipes --------------------
         [HttpGet("Recipe")]
-        public List<Recipe> GetRecipes()
+        public List<Recipes> GetRecipes()
         {
-            List<Recipe> recipeList = db.Recipes.ToList();
+            List<Recipes> recipeList = db.Recipes.ToList();
             return recipeList;
         }
 
@@ -64,7 +64,7 @@ namespace CulinaryC.Controllers
         {
             string newPass = Encrypt(password);
 
-            User u = new User();
+            Users u = new Users();
 
             u.LoginId = email;
             u.Password = newPass;
@@ -83,7 +83,7 @@ namespace CulinaryC.Controllers
             string npass = Encrypt(password);
             try
             {
-                User u = db.Users.Where(x => x.LoginId.ToLower() == email.ToLower() && x.Password == npass).ToList().First();
+                Users u = db.Users.Where(x => x.LoginId.ToLower() == email.ToLower() && x.Password == npass).ToList().First();
                 if (u != null)
                 {
                     return login = true;
@@ -98,7 +98,7 @@ namespace CulinaryC.Controllers
 
         [HttpPut("newEmail={email}&u={userId}")]
         public void NewEmail(string email, int userId) {
-            User u = db.Users.Find(userId);
+            Users u = db.Users.Find(userId);
 
             u.LoginId = email;
 
@@ -109,7 +109,7 @@ namespace CulinaryC.Controllers
         [HttpPut("Winner={userId}")]
         public void Winner(int userId)
         {
-            User u = db.Users.Find(userId);
+            Users u = db.Users.Find(userId);
 
             u.Score = u.Score + 17501;
 
@@ -120,39 +120,39 @@ namespace CulinaryC.Controllers
         [HttpDelete("removeUser={userId}")]
         public void RemoveUser(int userId)
         {
-            List<Recipe> recipes = db.Recipes.Where(x => x.UserId == userId).ToList();
-            foreach (Recipe r in recipes)
-            {
-                List<Ingredient> ing = db.Ingredients.Where(x => x.RecipeId == r.Id).ToList();
-                foreach(Ingredient i in ing)
-                {
-                    db.Ingredients.Remove(i);
-                }
-            }
-            foreach(Recipe r2 in recipes)
+            List<Recipes> recipes = db.Recipes.Where(x => x.UserId == userId).ToList();
+            //foreach (Recipes r in recipes)
+            //{
+            //    List<Ingredients> ing = db.Ingredients.Where(x => x.RecipeId == r.Id).ToList();
+            //    foreach(Ingredients i in ing)
+            //    {
+            //        db.Ingredients.Remove(i);
+            //    }
+            //}
+            foreach(Recipes r2 in recipes)
             {
                 db.Recipes.Remove(r2);
             }
 
-            List<Friend> freinds = db.Friends.Where(x => x.UserId == userId).ToList();
-            foreach(Friend f in freinds)
+            List<Friends> freinds = db.Friends.Where(x => x.UserId == userId).ToList();
+            foreach(Friends f in freinds)
             {
                 db.Friends.Remove(f);
             }
 
-            List<Group> groups = db.Groups.Where(x => x.UserId == userId).ToList();
+            List<Group> groups = db.Group.Where(x => x.UserId == userId).ToList();
             foreach (Group g in groups)
             {
-                db.Groups.Remove(g);
+                db.Group.Remove(g);
             }
 
-            List<Favorite> favs = db.Favorites.Where(x => x.UserId == userId).ToList();
+            List<Favorite> favs = db.Favorite.Where(x => x.UserId == userId).ToList();
             foreach (Favorite fav in favs)
             {
-                db.Favorites.Remove(fav);
+                db.Favorite.Remove(fav);
             }
 
-            User u = db.Users.Find(userId);
+            Users u = db.Users.Find(userId);
             db.Users.Remove(u);
 
             db.SaveChanges();
@@ -162,7 +162,7 @@ namespace CulinaryC.Controllers
         public void newPassword(string password, int userId)
         {
             string npass = Encrypt(password);
-            User u = db.Users.Find(userId);
+            Users u = db.Users.Find(userId);
 
             u.Password = npass;
 
@@ -198,7 +198,7 @@ namespace CulinaryC.Controllers
         public void changeAvatar(string img, int id)
         {
             //adds 5 points if its the first time changing name
-            User u = db.Users.Find(id);
+            Users u = db.Users.Find(id);
             if (u.Picture == null)
             {
                 u.Score = u.Score + 5;
@@ -215,7 +215,7 @@ namespace CulinaryC.Controllers
         public void changeTitle(string title, int id)
         {
             //adds 5 points if its the first time changing name
-            User u = db.Users.Find(id);
+            Users u = db.Users.Find(id);
             if (u.Title == null)
             {
                 u.Score = u.Score + 5;
@@ -232,7 +232,7 @@ namespace CulinaryC.Controllers
         public void UpdateName(string name, int id)
         {
             //adds 5 points if its the first time changing name
-            User u = db.Users.Find(id);
+            Users u = db.Users.Find(id);
             if (u.Name == null)
             {
                 u.Score = u.Score + 5;
@@ -247,29 +247,29 @@ namespace CulinaryC.Controllers
 
         //get all users
         [HttpGet("Leaderboard")]
-        public List<User> GetUsers()
+        public List<Users> GetUsers()
         {
            return db.Users.OrderByDescending(o=>o.Score).ToList();
         }
 
         [HttpGet("UserId={id}")]
-        public User GetUsersById(int id)
+        public Users GetUsersById(int id)
         {
-            User u = db.Users.Where(x => x.Id == id).ToList().First();
+            Users u = db.Users.Where(x => x.Id == id).ToList().First();
             return u;
         }
 
         [HttpGet("name={name}")]
-        public List<User> GetUsersByName(string name)
+        public List<Users> GetUsersByName(string name)
         {
-            List<User> users = db.Users.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList();
+            List<Users> users = db.Users.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList();
             return users;
         }
 
         [HttpGet("Login={email}")]
-        public User GetUsersById(string email)
+        public Users GetUsersById(string email)
         {
-            User u = db.Users.Where(x => x.LoginId.ToLower() == email.ToLower()).ToList().First();
+            Users u = db.Users.Where(x => x.LoginId.ToLower() == email.ToLower()).ToList().First();
             return u;
         }
 
@@ -282,7 +282,7 @@ namespace CulinaryC.Controllers
 
             List<Group> groups = new List<Group>();
 
-            groups = db.Groups.Where(x => x.UserId == id).ToList();
+            groups = db.Group.Where(x => x.UserId == id).ToList();
 
             return groups;
         }
@@ -290,7 +290,7 @@ namespace CulinaryC.Controllers
         [HttpGet("Allgroups")]
         public List<Group> Groups()
         {
-            List<Group> g = db.Groups.ToList();
+            List<Group> g = db.Group.ToList();
             return g;
         }
 
@@ -300,7 +300,7 @@ namespace CulinaryC.Controllers
 
             List<Group> groups = new List<Group>();
 
-            groups = db.Groups.Where(x => x.GroupName.ToLower() == name.ToLower()).ToList();
+            groups = db.Group.Where(x => x.GroupName.ToLower() == name.ToLower()).ToList();
 
             return groups;
         }
@@ -308,7 +308,7 @@ namespace CulinaryC.Controllers
         [HttpGet("GetGroup/Id={id}")]
         public Group GetGroupById(int id)
         {
-            Group g = db.Groups.Where(x => x.UserId == id).ToList().First();
+            Group g = db.Group.Where(x => x.UserId == id).ToList().First();
 
             return g;
         }
@@ -316,7 +316,7 @@ namespace CulinaryC.Controllers
         [HttpGet("GetGroupByGroupId/Id={id}")]
         public Group GetGroupByGroupId(int id)
         {
-            Group g = db.Groups.Where(x => x.GroupId == id).ToList().First();
+            Group g = db.Group.Where(x => x.GroupId == id).ToList().First();
 
             return g;
         }
@@ -331,12 +331,12 @@ namespace CulinaryC.Controllers
             //create a new group object
             Group g = new Group();
             //find a user by the email
-            User u = db.Users.Find(id);
+            Users u = db.Users.Find(id);
 
             //if statement if a list base on group name is = 0
 
             //you can only join 5 groups at a time
-            List<Group> groups = db.Groups.Where(x => x.UserId == u.Id).ToList();
+            List<Group> groups = db.Group.Where(x => x.UserId == u.Id).ToList();
             if (groups.Count < 5)
             {
                 //adding 5 points for joing a group
@@ -350,7 +350,7 @@ namespace CulinaryC.Controllers
                 g.GroupName = groupName;
                 g.Admin = false;
                 //update and save changes to DB
-                db.Groups.Add(g);
+                db.Group.Add(g);
                 db.SaveChanges();
             }
 
@@ -360,14 +360,14 @@ namespace CulinaryC.Controllers
         [HttpGet("checkgroup/u={userid}&n={name}")]
         public List<Group> CheckGroup(int userid, string name)
         {
-            List<Group> g = db.Groups.Where(x => x.UserId == userid && x.GroupName == name).ToList();
+            List<Group> g = db.Group.Where(x => x.UserId == userid && x.GroupName == name).ToList();
             return g;
         }
 
         [HttpGet("gname={name}")]
         public List<Group> GetGroupsByName(string name)
         {
-            List<Group> g = db.Groups.Where(x => x.GroupName == name).ToList();
+            List<Group> g = db.Group.Where(x => x.GroupName == name).ToList();
             return g;
         }
 
@@ -375,7 +375,7 @@ namespace CulinaryC.Controllers
 
         public List<Group> GetUsersInGroup(string name)
         {
-            List<Group> groupUsers = db.Groups.Where(x => x.GroupName == name).ToList();
+            List<Group> groupUsers = db.Group.Where(x => x.GroupName == name).ToList();
             return groupUsers;
         }
 
@@ -391,10 +391,10 @@ namespace CulinaryC.Controllers
             g.UserId = id;
             g.Admin = true;
 
-            User u = db.Users.Find(id);
-            List<Group> groups = db.Groups.Where(x => x.GroupName == name).ToList();
+            Users u = db.Users.Find(id);
+            List<Group> groups = db.Group.Where(x => x.GroupName == name).ToList();
 
-            List<Group> userGroups = db.Groups.Where(x => x.UserId == id).ToList();
+            List<Group> userGroups = db.Group.Where(x => x.UserId == id).ToList();
             if (groups.Count == 0)
             {
                 //if they are in five groups they cannot make a group
@@ -403,7 +403,7 @@ namespace CulinaryC.Controllers
                     u.Score = u.Score + 10;
 
                     db.Users.Update(u);
-                    db.Groups.Add(g);
+                    db.Group.Add(g);
                     db.SaveChanges();
                 }
             }
@@ -413,9 +413,9 @@ namespace CulinaryC.Controllers
         [HttpDelete("deleteuser={id}&n={groupName}")]
         public void RemoveUserFromGroup(int id, string groupName)
         {
-            Group groups = db.Groups.Where(x => x.GroupName == groupName && x.UserId == id).ToList().First();
+            Group groups = db.Group.Where(x => x.GroupName == groupName && x.UserId == id).ToList().First();
 
-            db.Groups.Remove(groups);
+            db.Group.Remove(groups);
             db.SaveChanges();
         }
 
@@ -423,10 +423,10 @@ namespace CulinaryC.Controllers
         [HttpDelete("removegroup/gname={name}")]
         public void RemoveGroup(string name)
         {
-            List<Group> groups = db.Groups.Where(x => x.GroupName.ToLower() == name.ToLower()).ToList();
+            List<Group> groups = db.Group.Where(x => x.GroupName.ToLower() == name.ToLower()).ToList();
             foreach (Group g in groups)
             {
-                db.Groups.Remove(g);
+                db.Group.Remove(g);
             }
             db.SaveChanges();
         }
@@ -434,16 +434,16 @@ namespace CulinaryC.Controllers
         //------------------------Favorites-----------------------------------
 
         [HttpGet("userfavorites={id}")]
-        public List<Recipe> GetFavorites(int id)
+        public List<Recipes> GetFavorites(int id)
         {
-            List<Recipe> rList = db.Recipes.ToList();
+            List<Recipes> rList = db.Recipes.ToList();
 
-            List<Favorite> favorites = db.Favorites.Where(x => x.UserId == id).ToList();
-            List<Recipe> recipes = new List<Recipe>();
+            List<Favorite> favorites = db.Favorite.Where(x => x.UserId == id).ToList();
+            List<Recipes> recipes = new List<Recipes>();
 
             foreach (Favorite f in favorites)
             {
-                foreach (Recipe r in rList)
+                foreach (Recipes r in rList)
                 {
                     if (f.RecipeId == r.Id)
                     {
@@ -457,7 +457,7 @@ namespace CulinaryC.Controllers
         [HttpGet("checkFavs={userId}&f={recipeId}")]
         public List<Favorite> CheckFavorites(int userId, int recipeId)
         {
-            List<Favorite> f = db.Favorites.Where(x => x.UserId == userId && x.RecipeId == recipeId).ToList();
+            List<Favorite> f = db.Favorite.Where(x => x.UserId == userId && x.RecipeId == recipeId).ToList();
             return f;
         }
 
@@ -468,7 +468,7 @@ namespace CulinaryC.Controllers
             f.RecipeId = recipeid;
             f.UserId = userid;
 
-            db.Favorites.Add(f);
+            db.Favorite.Add(f);
             db.SaveChanges();
         }
 
@@ -479,11 +479,11 @@ namespace CulinaryC.Controllers
             f.RecipeId = recipeid;
             f.UserId = userid;
 
-            List<Favorite> fav = db.Favorites.Where(x => x.RecipeId == f.RecipeId && x.UserId == f.UserId).ToList();
+            List<Favorite> fav = db.Favorite.Where(x => x.RecipeId == f.RecipeId && x.UserId == f.UserId).ToList();
 
             foreach(Favorite f2 in fav)
             {
-                db.Favorites.Remove(f2);
+                db.Favorite.Remove(f2);
             }
             
             db.SaveChanges();
@@ -491,16 +491,16 @@ namespace CulinaryC.Controllers
 
         //----------------------FriendsList---------------
         [HttpGet("friends={id}")]
-        public List<User> GetFriends(int id)
+        public List<Users> GetFriends(int id)
         {
-            List<User> uList = db.Users.ToList();
+            List<Users> uList = db.Users.ToList();
 
-            List<Friend> friends = db.Friends.Where(x => x.UserId == id).ToList();
-            List<User> users = new List<User>();
+            List<Friends> friends = db.Friends.Where(x => x.UserId == id).ToList();
+            List<Users> users = new List<Users>();
 
-            foreach (Friend f in friends)
+            foreach (Friends f in friends)
             {
-                foreach (User r in uList)
+                foreach (Users r in uList)
                 {
                     if (f.FriendId == r.Id)
                     {
@@ -512,18 +512,18 @@ namespace CulinaryC.Controllers
         }
 
         [HttpGet("Allfriends")]
-        public List<Friend> AllFriends()
+        public List<Friends> AllFriends()
         {
-            List<Friend> f = db.Friends.ToList();
+            List<Friends> f = db.Friends.ToList();
             return f;
         }
 
         //this to get friends data and display that that way I can ensure that if the user already
         //has someone as a friend the button wont even show to add friend!
         [HttpGet("checkfriends={userId}/f={friendId}")]
-        public List<Friend> checkFriends(int userId, int friendId)
+        public List<Friends> checkFriends(int userId, int friendId)
         {
-            List<Friend> f = db.Friends.Where(x => x.UserId == userId && x.FriendId == friendId).ToList();
+            List<Friends> f = db.Friends.Where(x => x.UserId == userId && x.FriendId == friendId).ToList();
             return f;
         }
 
@@ -532,12 +532,12 @@ namespace CulinaryC.Controllers
         public void AddFriend(int userid, int friendid)
         {
             
-            User u = db.Users.Find(userid);
+            Users u = db.Users.Find(userid);
 
             u.Score = u.Score + 5;
 
             //checking if they are already friends and then not adding it if they are friends
-            Friend f = new Friend();
+            Friends f = new Friends();
             f.UserId = userid;
             f.FriendId = friendid;
 
@@ -551,11 +551,11 @@ namespace CulinaryC.Controllers
         [HttpDelete("removefriend/u={userid}&f={friendid}")]
         public void RemoveFriend(int userid, int friendid)
         {
-            Friend f = new Friend();
+            Friends f = new Friends();
             f.FriendId = friendid;
             f.UserId = userid;
 
-            Friend f2 = db.Friends.Where(x => x.FriendId == friendid && x.UserId == userid).ToList().First();
+            Friends f2 = db.Friends.Where(x => x.FriendId == friendid && x.UserId == userid).ToList().First();
 
             db.Friends.Remove(f2);
             db.SaveChanges();
@@ -566,9 +566,9 @@ namespace CulinaryC.Controllers
         //------------------------------------Invites----------------------------------------------------------
 
         [HttpGet("Invites/U={userId}")]
-        public List<Invite> GetInvites(int userId)
+        public List<Invites> GetInvites(int userId)
         {
-            List<Invite> invites = db.Invites.Where(x => x.InviteeId == userId).ToList();
+            List<Invites> invites = db.Invites.Where(x => x.InviteeId == userId).ToList();
             return invites;
         }
 
@@ -577,8 +577,8 @@ namespace CulinaryC.Controllers
         [HttpDelete("removeI={name}&u={inviteeId}")]
         public void RemoveInvite(string name, int inviteeId)
         {
-            List<Invite> I = db.Invites.Where(x => x.InviteeId == inviteeId && x.NameofGroup == name).ToList();
-            foreach(Invite In in I)
+            List<Invites> I = db.Invites.Where(x => x.InviteeId == inviteeId && x.NameofGroup == name).ToList();
+            foreach(Invites In in I)
             {
                 db.Invites.Remove(In);
             }
@@ -592,7 +592,7 @@ namespace CulinaryC.Controllers
         [HttpPost("NewInvite/U={inviteeId}&O={inviterEmail}&N={name}")]
         public void NewInvite(int inviteeId, string inviterEmail, string name)
         {
-            Invite I = new Invite();
+            Invites I = new Invites();
             I.InviteeId = inviteeId;
             I.InviterEmail = inviterEmail;
             I.NameofGroup = name;

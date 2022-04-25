@@ -11,7 +11,7 @@ namespace CulinaryC3.Models
     {
         public Recipes()
         {
-            Ingredients = new HashSet<Ingredients>();
+            RecipeIngredients = new HashSet<RecipeIngredients>();
         }
 
         public int Id { get; set; }
@@ -23,6 +23,6 @@ namespace CulinaryC3.Models
         public string Picture { get; set; }
 
         public virtual Users User { get; set; }
-        public virtual ICollection<Ingredients> Ingredients { get; set; }
+        public virtual ICollection<RecipeIngredients> RecipeIngredients { get; set; }
     }
 }

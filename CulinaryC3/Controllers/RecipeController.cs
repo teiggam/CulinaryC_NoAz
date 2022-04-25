@@ -1,5 +1,5 @@
 ﻿
-using CulinaryC3.Model;
+using CulinaryC3.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,16 +16,16 @@ namespace CulinaryC.Controllers
         CookBook2Context db = new CookBook2Context();
 
         [HttpGet("All")]
-        public List<Recipe> GetRecipes()
+        public List<Recipes> GetRecipes()
         {
-            List<Recipe> recipeList = db.Recipes.OrderByDescending(x => x.Score).ToList();
+            List<Recipes> recipeList = db.Recipes.OrderByDescending(x => x.Score).ToList();
             return recipeList;
         }
 
         [HttpGet("id={userId}")]
-        public List<Recipe> DisplayUserRecipes(int userId)
+        public List<Recipes> DisplayUserRecipes(int userId)
         {
-            List<Recipe> userRecipes = db.Recipes.Where(x => x.UserId == userId).ToList();
+            List<Recipes> userRecipes = db.Recipes.Where(x => x.UserId == userId).ToList();
 
             return userRecipes.OrderByDescending(x => x.Id).ToList();
         }
@@ -34,7 +34,7 @@ namespace CulinaryC.Controllers
 
         public void AddNewRecipe(string title, int userId)
         {
-            Recipe r = new Recipe
+            Recipes r = new Recipes
             {
                 RecipeName = title,
                 UserId = userId,
@@ -46,36 +46,36 @@ namespace CulinaryC.Controllers
         }
 
         [HttpGet("Ingredients/All")]
-        public List<Ingredient> GetIngredients()
+        public List<Ingredients> GetIngredients()
         {
-            List<Ingredient> ingrList = db.Ingredients.ToList();
+            List<Ingredients> ingrList = db.Ingredients.ToList();
             return ingrList;
         }
 
-        [HttpGet("GetRecipesByIngName={ingName}")]
-        public List<Recipe> GetRecipesByIngName(string ingName)
-        {
-            List<Recipe> RList = db.Recipes.ToList();
-            List<Ingredient> I = db.Ingredients.Where(x => x.Item.Contains(ingName)).ToList();
-            List<Recipe> RFound = new List<Recipe>();
-            foreach (Ingredient i in I)
-            {
-                foreach (Recipe r in RList)
-                {
-                    if (i.RecipeId == r.Id)
-                    {
-                        RFound.Add(r);
-                    }
-                }
-            }
-            return RFound;
-        }
+        //[HttpGet("GetRecipesByIngName={ingName}")]
+        //public List<Recipes> GetRecipesByIngName(string ingName)
+        //{
+        //    List<Recipes> RList = db.Recipes.ToList();
+        //    List<Ingredients> I = db.Ingredients.Where(x => x.Name.Contains(ingName)).ToList();
+        //    List<Recipes> RFound = new List<Recipes>();
+        //    foreach (Ingredients i in I)
+        //    {
+        //        foreach (Recipes r in RList)
+        //        {
+        //            if (i.RecipeId == r.Id)
+        //            {
+        //                RFound.Add(r);
+        //            }
+        //        }
+        //    }
+        //    return RFound;
+        //}
 
         [HttpPut("removescore={recipeId}")]
         public void removeRecipe(int recipeId)
         {
-            Recipe r = db.Recipes.Where(x => x.Id == recipeId).ToList().First();
-            User u = db.Users.Find(r.UserId);
+            Recipes r = db.Recipes.Where(x => x.Id == recipeId).ToList().First();
+            Users u = db.Users.Find(r.UserId);
 
             u.Score = u.Score - 5;
 
@@ -89,7 +89,7 @@ namespace CulinaryC.Controllers
         [HttpPut("updateScore={recipeId}")]
         public void completeRecipe(int recipeId)
         {
-            Recipe r = db.Recipes.Where(x => x.Id == recipeId).ToList().First();
+            Recipes r = db.Recipes.Where(x => x.Id == recipeId).ToList().First();
 
             r.Score = r.Score + 10;
 
@@ -100,23 +100,23 @@ namespace CulinaryC.Controllers
 
             // Need to switch to contains
         [HttpGet("N={name}")]
-        public Recipe GetRecipeByName(string name)
+        public Recipes GetRecipeByName(string name)
         {
-            Recipe rec = db.Recipes.Where(x => x.RecipeName.ToLower() == name.ToLower()).ToList().Last();
+            Recipes rec = db.Recipes.Where(x => x.RecipeName.ToLower() == name.ToLower()).ToList().Last();
 
             return rec;
         }
 
         [HttpGet("search/N={name}")]
-        public List<Recipe> GetAllRecipeByName(string name)
+        public List<Recipes> GetAllRecipeByName(string name)
         {
-            List<Recipe> rec = db.Recipes.Where(x => x.RecipeName.ToLower().Contains(name.ToLower())).ToList();
+            List<Recipes> rec = db.Recipes.Where(x => x.RecipeName.ToLower().Contains(name.ToLower())).ToList();
 
             return rec;
         }
 
         [HttpPost("Ingredients/Add")]
-        public void AddIngredient(Ingredient ing)
+        public void AddIngredient(Ingredients ing)
         {
             db.Ingredients.Add(ing);
             db.SaveChanges();
@@ -125,8 +125,8 @@ namespace CulinaryC.Controllers
         [HttpPut("Update/N={name}/D={desc}/S={serv}/I={image}")]
         public void UpdateRecipe(string name, string desc, int serv, string image)
         {
-            Recipe r = db.Recipes.Where(x => x.RecipeName == name).ToList().Last();
-            User u = db.Users.Where(x => x.Id == r.UserId).ToList().First();
+            Recipes r = db.Recipes.Where(x => x.RecipeName == name).ToList().Last();
+            Users u = db.Users.Where(x => x.Id == r.UserId).ToList().First();
             u.Score = u.Score + 20;
             db.Users.Update(u);
             // string newPath = "https://recipephotos.blob.core.windows.net/photos/photos/" + image;
@@ -140,32 +140,32 @@ namespace CulinaryC.Controllers
 
         //used currently in details componet
         [HttpGet("FindRecipe/Id={id}")]
-        public Recipe FindRecipeById(int id)
+        public Recipes FindRecipeById(int id)
         {
-           Recipe r = db.Recipes.Find(id);
+           Recipes r = db.Recipes.Find(id);
            return r;
         }
 
         [HttpGet("Ingredients/Id={id}")]
-        public Ingredient GetIngredientById(int id)
+        public Ingredients GetIngredientById(int id)
         {
-            Ingredient ing = db.Ingredients.Find(id);
+            Ingredients ing = db.Ingredients.Find(id);
             return ing;
 
         }
 
-        [HttpDelete("deleteRecipe={id}")]
-        public void DeleteRecipe(int id)
-        {
-            Recipe r = db.Recipes.Find(id);
-            List<Ingredient> I = db.Ingredients.Where(x => x.RecipeId == r.Id).ToList();
-            foreach(Ingredient ing in I)
-            {
-                db.Ingredients.Remove(ing);
-            }
+        //[HttpDelete("deleteRecipe={id}")]
+        //public void DeleteRecipe(int id)
+        //{
+        //    Recipes r = db.Recipes.Find(id);
+        //    List<Ingredients> I = db.Ingredients.Where(x => x.RecipeId == r.Id).ToList();
+        //    foreach(Ingredients ing in I)
+        //    {
+        //        db.Ingredients.Remove(ing);
+        //    }
 
-            db.Recipes.Remove(r);
-            db.SaveChanges();
-        }
+        //    db.Recipes.Remove(r);
+        //    db.SaveChanges();
+        //}
     }
 }

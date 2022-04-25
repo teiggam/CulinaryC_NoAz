@@ -1,5 +1,5 @@
 
-using CulinaryC3.Model;
+using CulinaryC3.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

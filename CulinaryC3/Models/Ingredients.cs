@@ -9,17 +9,21 @@ namespace CulinaryC3.Models
 {
     public partial class Ingredients
     {
+        public Ingredients()
+        {
+            RecipeIngredients = new HashSet<RecipeIngredients>();
+        }
+
         public int Id { get; set; }
-        public int? RecipeId { get; set; }
-        public string Item { get; set; }
-        public double? Amount { get; set; }
-        public string Unit { get; set; }
+        public string Name { get; set; }
+        public string BaseUnit { get; set; }
+        public double? BaseAmount { get; set; }
         public double? Calories { get; set; }
         public double? Carbs { get; set; }
         public double? Protein { get; set; }
         public double? Fats { get; set; }
         public string Aisle { get; set; }
 
-        public virtual Recipes Recipe { get; set; }
+        public virtual ICollection<RecipeIngredients> RecipeIngredients { get; set; }
     }
 }

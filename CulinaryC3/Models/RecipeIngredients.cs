@@ -7,12 +7,15 @@ using System.Collections.Generic;
 
 namespace CulinaryC3.Models
 {
-    public partial class Favorite
+    public partial class RecipeIngredients
     {
         public int Id { get; set; }
         public int? RecipeId { get; set; }
-        public int? UserId { get; set; }
+        public int? IngredientId { get; set; }
+        public double? AmountUsed { get; set; }
+        public string InputUnit { get; set; }
 
-        public virtual Users User { get; set; }
+        public virtual Ingredients Ingredient { get; set; }
+        public virtual Recipes Recipe { get; set; }
     }
 }
