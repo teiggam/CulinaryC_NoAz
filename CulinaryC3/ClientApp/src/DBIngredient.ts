@@ -1,14 +1,14 @@
 export interface DBIngredient {
-  id: number;
-  recipeId: number;
-  item: string;
-  amount: number;
-  unit: string;
-  calories: number;
-  carbs: number;
-  protein: number;
-  fats: number;
-  aisle: string;
-
-
+  id: number,
+  recipeId: number,
+  name: string,
+  baseamount: number,
+  baseunit: string,
+  AmountUsed: number,
+  InputUnit: string,
+  calories: number,
+  carbs: number,
+  protein: number,
+  fats: number,
+  aisle: string
 }

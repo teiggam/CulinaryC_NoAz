@@ -8,7 +8,7 @@ import { User } from '../../User';
 import { InvitesService } from '../../invites.service';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeService } from '../../RecipeService';
-import { Recipe } from '../../Recipe';
+import { Recipes } from '../../Recipes';
 import { FavoritesService } from '../../favorites.service';
 import { Favorites } from '../../favorites';
 
@@ -34,8 +34,8 @@ export class DetailGroupComponent {
   groupName: string;
   groupUsers: Group[];
   i: number;
-  recipes: Recipe[];
-  allRecipes: Recipe[] = [];
+  recipes: Recipes[];
+  allRecipes: Recipes[] = [];
   recipe: Favorites[] = [];
   Users: User[] = [];
 

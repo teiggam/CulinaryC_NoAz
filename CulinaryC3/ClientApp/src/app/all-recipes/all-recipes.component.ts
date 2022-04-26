@@ -3,7 +3,7 @@ import { SpoonacularAPI } from '../../SpoonacularAPIService';
 import { WholeFood } from '../../WholeFood';
 import { Ingredient } from '../../Ingredient';
 import { RecipeService } from '../../RecipeService';
-import { Recipe } from '../../Recipe';
+import { Recipes } from '../../Recipes';
 import { DBIngredient } from '../../DBIngredient';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../UserService';
@@ -22,9 +22,9 @@ import { ActivatedRoute } from '@angular/router';
 /** All-Recipes component*/
 export class AllRecipesComponent {
   //Load in all the Recipes
-  recipes: Recipe[];
-  r: Recipe[] = [];
-  foundRecipe: Recipe[];
+  recipes: Recipes[];
+  r: Recipes[] = [];
+  foundRecipe: Recipes[];
   ingList: DBIngredient[];
   userId: number;
   userInfo: string = "";
@@ -43,9 +43,9 @@ export class AllRecipesComponent {
       this.recipes = result;
       console.log(this.recipes)
     })
-    recServ.getIngredients().subscribe((Ingredient) => {
-      this.ingList = Ingredient;
-    })
+    //recServ.getAllIngredients().subscribe((Ingredient) => {
+    //  this.ingList = Ingredient;
+    //})
 
     
 

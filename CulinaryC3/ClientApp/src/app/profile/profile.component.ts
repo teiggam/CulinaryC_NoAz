@@ -6,7 +6,7 @@ import { Group } from '../../group';
 import { GroupService } from '../../group.service';
 import { Invites } from '../../invites';
 import { InvitesService } from '../../invites.service';
-import { Recipe } from '../../Recipe';
+import { Recipes } from '../../Recipes';
 import { RecipeService } from '../../RecipeService';
 import { User } from '../../User';
 import { UserService } from '../../UserService';
@@ -25,7 +25,7 @@ export class ProfileComponent {
   userId: number;
   user: User;
   fList: Friends[] = [];
-  rList: Recipe[] = [];
+  rList: Recipes[] = [];
   value: number;
   gList: Group[] = [];
   bool: boolean = true;

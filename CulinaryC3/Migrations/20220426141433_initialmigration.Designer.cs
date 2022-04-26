@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CulinaryC3.Migrations
 {
     [DbContext(typeof(CookBook2Context))]
-    [Migration("20220317124758_initialmigration")]
+    [Migration("20220426141433_initialmigration")]
     partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,11 +18,10 @@ namespace CulinaryC3.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.16")
-                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CulinaryC3.Model.Favorite", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Favorite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +41,7 @@ namespace CulinaryC3.Migrations
                     b.ToTable("Favorite");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Friend", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Friends", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +62,7 @@ namespace CulinaryC3.Migrations
                     b.ToTable("Friends");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Group", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Group", b =>
                 {
                     b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
@@ -90,7 +89,7 @@ namespace CulinaryC3.Migrations
                     b.ToTable("Group");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Ingredient", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Ingredients", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,8 +100,12 @@ namespace CulinaryC3.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<double?>("Amount")
+                    b.Property<double?>("BaseAmount")
                         .HasColumnType("float");
+
+                    b.Property<string>("BaseUnit")
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<double?>("Calories")
                         .HasColumnType("float");
@@ -113,28 +116,19 @@ namespace CulinaryC3.Migrations
                     b.Property<double?>("Fats")
                         .HasColumnType("float");
 
-                    b.Property<string>("Item")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<double?>("Protein")
                         .HasColumnType("float");
 
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
 
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Invite", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Invites", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,7 +151,38 @@ namespace CulinaryC3.Migrations
                     b.ToTable("Invites");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Recipe", b =>
+            modelBuilder.Entity("CulinaryC3.Models.RecipeIngredients", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double?>("AmountUsed")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("IngredientId")
+                        .HasColumnName("IngredientID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InputUnit")
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnName("RecipeID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("RecipeIngredients");
+                });
+
+            modelBuilder.Entity("CulinaryC3.Models.Recipes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -190,7 +215,7 @@ namespace CulinaryC3.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.User", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Users", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -225,41 +250,46 @@ namespace CulinaryC3.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Favorite", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Favorite", b =>
                 {
-                    b.HasOne("CulinaryC3.Model.User", "User")
-                        .WithMany("Favorites")
+                    b.HasOne("CulinaryC3.Models.Users", "User")
+                        .WithMany("Favorite")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK__Favorite__UserId__6477ECF3");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Friend", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Friends", b =>
                 {
-                    b.HasOne("CulinaryC3.Model.User", "User")
+                    b.HasOne("CulinaryC3.Models.Users", "User")
                         .WithMany("Friends")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK__Friends__UserId__6A30C649");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Group", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Group", b =>
                 {
-                    b.HasOne("CulinaryC3.Model.User", "User")
-                        .WithMany("Groups")
+                    b.HasOne("CulinaryC3.Models.Users", "User")
+                        .WithMany("Group")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK__Group__UserId__5EBF139D");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Ingredient", b =>
+            modelBuilder.Entity("CulinaryC3.Models.RecipeIngredients", b =>
                 {
-                    b.HasOne("CulinaryC3.Model.Recipe", "Recipe")
-                        .WithMany("Ingredients")
+                    b.HasOne("CulinaryC3.Models.Ingredients", "Ingredient")
+                        .WithMany("RecipeIngredients")
+                        .HasForeignKey("IngredientId")
+                        .HasConstraintName("FK__RecipeIng__Ingre__6383C8BA");
+
+                    b.HasOne("CulinaryC3.Models.Recipes", "Recipe")
+                        .WithMany("RecipeIngredients")
                         .HasForeignKey("RecipeId")
-                        .HasConstraintName("FK__Ingredien__Recip__6754599E");
+                        .HasConstraintName("FK__RecipeIng__Recip__628FA481");
                 });
 
-            modelBuilder.Entity("CulinaryC3.Model.Recipe", b =>
+            modelBuilder.Entity("CulinaryC3.Models.Recipes", b =>
                 {
-                    b.HasOne("CulinaryC3.Model.User", "User")
+                    b.HasOne("CulinaryC3.Models.Users", "User")
                         .WithMany("Recipes")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK__Recipes__UserId__619B8048");

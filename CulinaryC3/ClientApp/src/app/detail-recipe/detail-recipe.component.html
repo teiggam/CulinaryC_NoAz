@@ -5,9 +5,9 @@
   <div *ngIf="message == null">
     <button style="float: right;" type="button" class="btn btn-outline-info button-space" (click)="completed(r.id)">I Made This!</button>
   </div>
-    <div style="float: right;" *ngIf="message !== null">
-      <h3>{{message}}</h3>
-    </div>
+  <div style="float: right;" *ngIf="message !== null">
+    <h3>{{message}}</h3>
+  </div>
   <div>
     <h2>{{r.recipeName}} </h2>
     <h6>*Nutritional information is only an estimate and may not be accurate*</h6>
@@ -27,9 +27,10 @@
 
   <h2>Ingredients </h2>
   <div *ngFor="let ing of dbIngList">
-    <h5 *ngIf="r.id === ing.recipeId">
-      - {{ing.amount}} {{ing.unit}} {{ing.item}}
+    <h5>
+      - {{ing.AmountUsed}} {{ing.InputUnit}} of {{ing.name}}
     </h5>
+
   </div>
   <div>
     <br />

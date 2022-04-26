@@ -52,24 +52,64 @@ namespace CulinaryC.Controllers
             return ingrList;
         }
 
-        //[HttpGet("GetRecipesByIngName={ingName}")]
-        //public List<Recipes> GetRecipesByIngName(string ingName)
-        //{
-        //    List<Recipes> RList = db.Recipes.ToList();
-        //    List<Ingredients> I = db.Ingredients.Where(x => x.Name.Contains(ingName)).ToList();
-        //    List<Recipes> RFound = new List<Recipes>();
-        //    foreach (Ingredients i in I)
-        //    {
-        //        foreach (Recipes r in RList)
-        //        {
-        //            if (i.RecipeId == r.Id)
-        //            {
-        //                RFound.Add(r);
-        //            }
-        //        }
-        //    }
-        //    return RFound;
-        //}
+        [HttpGet("/RecipeIngredients/{recipeID}")]
+        public List<IngData>GetIngredientDetails(int recipeID)
+        {
+            List<IngData> recipeIngredients = new List<IngData>();
+            List<RecipeIngredients> riList = db.RecipeIngredients.Where(x => x.RecipeId == recipeID).ToList();
+
+
+            foreach(RecipeIngredients ri in riList)
+            {
+                if(ri.RecipeId == recipeID)
+                {
+                    Ingredients ing = db.Ingredients.Where(x => x.Id == ri.IngredientId).FirstOrDefault();
+                    IngData inToAdd = new IngData();
+
+                    inToAdd.RecipeID = ri.RecipeId;
+                    inToAdd.Name = ing.Name;
+                    inToAdd.BaseAmount = ing.BaseAmount;
+                    inToAdd.BaseUnit = ing.BaseUnit;
+                    inToAdd.AmountUsed = ri.AmountUsed;
+                    inToAdd.InputUnit = ri.InputUnit;
+                    inToAdd.Calories = ing.Calories;
+                    inToAdd.Protein = ing.Protein;
+                    inToAdd.Fats = ing.Fats;
+                    inToAdd.Aisle = ing.Aisle;
+
+                    recipeIngredients.Add(inToAdd);
+                }
+
+            }
+            return recipeIngredients;
+        }
+
+        [HttpGet("GetRecipesByIngName={ingName}")]
+        public List<Recipes> GetRecipesByIngName(string ingName)
+        {
+            List<Recipes> RList = db.Recipes.ToList();
+            List<Ingredients> I = db.Ingredients.Where(x => x.Name.Contains(ingName)).ToList();
+            List<RecipeIngredients> inRecipe = new List<RecipeIngredients>();
+            foreach(Ingredients i in I)
+            {
+                RecipeIngredients RecIn = db.RecipeIngredients.Where(x => x.IngredientId == i.Id).First();
+                inRecipe.Add(RecIn);
+            }
+
+            List<Recipes> RFound = new List<Recipes>();
+            foreach (RecipeIngredients ri in inRecipe)
+            {
+                foreach (Recipes r in RList)
+                {
+                    if (ri.RecipeId == r.Id)
+                    {
+                        RFound.Add(r);
+                    }
+                }
+
+            }
+            return RFound;
+        }
 
         [HttpPut("removescore={recipeId}")]
         public void removeRecipe(int recipeId)
@@ -87,7 +127,7 @@ namespace CulinaryC.Controllers
         }
 
         [HttpPut("updateScore={recipeId}")]
-        public void completeRecipe(int recipeId)
+        public void CompleteRecipe(int recipeId)
         {
             Recipes r = db.Recipes.Where(x => x.Id == recipeId).ToList().First();
 
@@ -116,9 +156,24 @@ namespace CulinaryC.Controllers
         }
 
         [HttpPost("Ingredients/Add")]
-        public void AddIngredient(Ingredients ing)
+        public void AddIngredient(IngData ing)
         {
-            db.Ingredients.Add(ing);
+            //First need to check if ingredient is in DB
+            List<Ingredients> IList = db.Ingredients.Where(x => x.Name.ToLower() == ing.Name.ToLower()).ToList();
+            if (IList.Count > 0)
+            {
+                //If yes, then add new line to RecipeIngredients in relation to new recipe.
+                int ingID = IList.First().Id;
+                RecipeIngredients recipeIngredients = new RecipeIngredients();
+                recipeIngredients.IngredientId = ingID;
+                AddRecipeIngredient(ing, recipeIngredients);
+            }
+            else
+            {
+                //If no, add the new ingredient to the ingredient table, then add new line in RecipeIngredient
+                AddToIngredientTable(ing);
+            }
+            //Save in DB
             db.SaveChanges();
         }
 
@@ -142,8 +197,8 @@ namespace CulinaryC.Controllers
         [HttpGet("FindRecipe/Id={id}")]
         public Recipes FindRecipeById(int id)
         {
-           Recipes r = db.Recipes.Find(id);
-           return r;
+            Recipes r = db.Recipes.Where(x => x.Id == id).FirstOrDefault();
+            return r;
         }
 
         [HttpGet("Ingredients/Id={id}")]
@@ -154,18 +209,44 @@ namespace CulinaryC.Controllers
 
         }
 
-        //[HttpDelete("deleteRecipe={id}")]
-        //public void DeleteRecipe(int id)
-        //{
-        //    Recipes r = db.Recipes.Find(id);
-        //    List<Ingredients> I = db.Ingredients.Where(x => x.RecipeId == r.Id).ToList();
-        //    foreach(Ingredients ing in I)
-        //    {
-        //        db.Ingredients.Remove(ing);
-        //    }
+        [HttpDelete("deleteRecipe={id}")]
+        public void DeleteRecipe(int id)
+        {
+            Recipes r = db.Recipes.Find(id);
+            List<RecipeIngredients> ri = db.RecipeIngredients.Where(x => x.RecipeId == r.Id).ToList();
+               foreach (RecipeIngredients recing in ri)
+                {
+                    if (r.Id == recing.RecipeId)
+                    {
+                        db.RecipeIngredients.Remove(recing);
+                    }
+                }
+            db.Recipes.Remove(r);
+            db.SaveChanges();
+        }
 
-        //    db.Recipes.Remove(r);
-        //    db.SaveChanges();
-        //}
+        private void AddRecipeIngredient(IngData ing, RecipeIngredients ringtoDB)
+        {
+            ringtoDB.RecipeId = ing.RecipeID;
+            ringtoDB.AmountUsed = ing.AmountUsed;
+            ringtoDB.InputUnit = ing.InputUnit;
+
+            db.RecipeIngredients.Add(ringtoDB);
+        }
+
+        private void AddToIngredientTable(IngData ing)
+        {
+            Ingredients newIng = new Ingredients();
+            newIng.Name = ing.Name;
+            newIng.BaseUnit = ing.BaseUnit;
+            newIng.BaseAmount = ing.BaseAmount;
+            newIng.Calories = ing.Calories;
+            newIng.Carbs = ing.Carbs;
+            newIng.Protein = ing.Protein;
+            newIng.Fats = ing.Fats;
+            newIng.Aisle = ing.Aisle;
+
+            db.Ingredients.Add(newIng);
+        }
     }
 }

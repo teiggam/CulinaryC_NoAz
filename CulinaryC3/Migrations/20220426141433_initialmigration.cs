@@ -7,6 +7,26 @@ namespace CulinaryC3.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    BaseUnit = table.Column<string>(maxLength: 15, nullable: true),
+                    BaseAmount = table.Column<double>(nullable: true),
+                    Calories = table.Column<double>(nullable: true),
+                    Carbs = table.Column<double>(nullable: true),
+                    Protein = table.Column<double>(nullable: true),
+                    Fats = table.Column<double>(nullable: true),
+                    Aisle = table.Column<string>(maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Invites",
                 columns: table => new
                 {
@@ -126,27 +146,28 @@ namespace CulinaryC3.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ingredients",
+                name: "RecipeIngredients",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecipeId = table.Column<int>(nullable: true),
-                    Item = table.Column<string>(maxLength: 50, nullable: true),
-                    Amount = table.Column<double>(nullable: true),
-                    Unit = table.Column<string>(maxLength: 10, nullable: true),
-                    Calories = table.Column<double>(nullable: true),
-                    Carbs = table.Column<double>(nullable: true),
-                    Protein = table.Column<double>(nullable: true),
-                    Fats = table.Column<double>(nullable: true),
-                    Aisle = table.Column<string>(maxLength: 50, nullable: true)
+                    RecipeID = table.Column<int>(nullable: true),
+                    IngredientID = table.Column<int>(nullable: true),
+                    AmountUsed = table.Column<double>(nullable: true),
+                    InputUnit = table.Column<string>(maxLength: 15, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.PrimaryKey("PK_RecipeIngredients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK__Ingredien__Recip__6754599E",
-                        column: x => x.RecipeId,
+                        name: "FK__RecipeIng__Ingre__6383C8BA",
+                        column: x => x.IngredientID,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK__RecipeIng__Recip__628FA481",
+                        column: x => x.RecipeID,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -168,9 +189,14 @@ namespace CulinaryC3.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_RecipeId",
-                table: "Ingredients",
-                column: "RecipeId");
+                name: "IX_RecipeIngredients_IngredientID",
+                table: "RecipeIngredients",
+                column: "IngredientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredients_RecipeID",
+                table: "RecipeIngredients",
+                column: "RecipeID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipes_UserId",
@@ -190,10 +216,13 @@ namespace CulinaryC3.Migrations
                 name: "Group");
 
             migrationBuilder.DropTable(
-                name: "Ingredients");
+                name: "Invites");
 
             migrationBuilder.DropTable(
-                name: "Invites");
+                name: "RecipeIngredients");
+
+            migrationBuilder.DropTable(
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "Recipes");

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Recipe } from '../../Recipe';
+import { Recipes } from '../../Recipes';
 import { RecipeofDay } from '../../RecipeofDay';
 import { RecipeService } from '../../RecipeService';
 import { UserService } from '../../UserService';
@@ -17,9 +17,9 @@ export class HomeComponent {
   public userName: Observable<string>;
   recipeString: string;
   recipeDay: RecipeofDay;
-  recipe: Recipe[];
+  recipe: Recipes[];
   num: number;
-  realRecipe: Recipe;
+  realRecipe: Recipes;
 
 
 

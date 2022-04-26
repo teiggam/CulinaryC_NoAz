@@ -25,7 +25,7 @@
         <div class="secondary-border center ingredient-list">
           <h3>Ingredient List</h3>
           <h5 *ngFor="let in of iList; index as i">
-            {{in.amount}} {{in.unit}} - {{in.item}} <button class="btn btn-outline-light button-space" (click)="RemoveIngredient(i)">x</button>
+            {{in.AmountUsed}} {{in.InputUnit}} - {{in.name}} <button class="btn btn-outline-light button-space" (click)="RemoveIngredient(i)">x</button>
           </h5>
         </div>
       </div>

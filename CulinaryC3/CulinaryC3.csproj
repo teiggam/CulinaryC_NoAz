@@ -36,20 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20220317124436_initialmigration.cs" />
-    <Compile Remove="Migrations\20220317124436_initialmigration.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="ClientApp\src\RecipeofDay.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\RecipeofDay.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
